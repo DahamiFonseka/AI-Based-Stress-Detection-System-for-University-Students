@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <Navbar />
-      {/* <LoginRegister /> */}
+      <LoginRegister />
     </>
   );
 }
