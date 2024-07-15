@@ -1,0 +1,33 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    backdrop-filter: blur(2px);
+}
+
+.home {
+    text-align: center;
+    
+}
+
+h1{
+    font-size: 48px;
+}
+
+button {
+  margin: 5px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  background-color: #7da0b1;
+  color: #000000;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #397695;
+}

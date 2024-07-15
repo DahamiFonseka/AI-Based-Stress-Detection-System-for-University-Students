@@ -1,0 +1,52 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #7da0b1;
+  padding: 12px 50px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 35px;
+  font-weight: bold;
+  color: black;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  font-size: 22px;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+  opacity: 0.7;
+  transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+nav ul li {
+  display: inline;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+  opacity: 1;
+}
+
+
