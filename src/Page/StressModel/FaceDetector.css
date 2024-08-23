@@ -4,13 +4,35 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    min-width: 50vh;
     background-color: #f0f0f0;
+    
   }
   
   .webcam {
+    width: 100%;       /* Make it responsive */
+    height: auto;      /* Maintain aspect ratio */
+    max-width: 800px;  /* Maximum width */
+    max-height: 600px; /* Maximum height */
     border-radius: 8px;
     border: 1px solid #ddd;
     margin-bottom: 20px;
+  }
+
+  .webcam-large {
+    width: 100%;
+    max-width: 1000px; /* Increased size */
+    max-height: 750px; /* Increased size */
+    height: auto; /* Maintain aspect ratio */
+  }
+
+  .video-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    max-width: 800px; /* Adjust to match webcam size */
+    max-height: 600px; /* Adjust to match webcam size */
+    margin: 0 auto; /* Center the webcam container */
   }
   
   .buttons {
