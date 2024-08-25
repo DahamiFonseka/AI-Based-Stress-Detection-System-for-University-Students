@@ -18,12 +18,33 @@ const stressLevelDistribution = [
   { name: 'High', value: 200 },
 ];
 
+const criticalStressCases = [
+  { id: '101', time: '2024-08-21 10:30:00', details: 'Severe stress identified in student 101.' },
+  { id: '102', time: '2024-08-22 14:45:00', details: 'Severe stress identified in student 102.' },
+  { id: '103', time: '2024-08-23 09:15:00', details: 'Severe stress identified in student 103.' },
+  { id: '104', time: '2024-08-24 12:00:00', details: 'Severe stress identified in student 104.' },
+  { id: '105', time: '2024-08-25 16:20:00', details: 'Severe stress identified in student 105.' },
+];
+
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
 const Statistics = () => {
   return (
     <div className="statistics-container">
       <h1>Stress Detection Statistics</h1>
+
+      <div className="chart-section">
+        <h2>Identified Critical Stress Cases</h2>
+        <ul className="critical-cases-list">
+          {criticalStressCases.map((caseData) => (
+            <li key={caseData.id} className="critical-case-item">
+              <span><strong>ID:</strong> {caseData.id}</span>
+              <span><strong>Time:</strong> {caseData.time}</span>
+              <span><strong>Details:</strong> {caseData.details}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <div className="chart-section">
         <h2>Monthly Stress Overview</h2>
