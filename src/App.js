@@ -10,6 +10,9 @@ import Register from './Page/Register';
 import Dashboard from './Page/Dashboard';
 import Admin from './Page/Admin';
 import FaceDetector from './Page/StressModel/FaceDetector';
+import History from './Page/history';
+import Statistics from './Page/statistics';
+import DownloadReport from './Page/downloadReport';
 
 function App() {
 
@@ -28,6 +31,9 @@ function App() {
             <Route path="/admin" element={<Admin />} />
             <Route path="/home" element={<ProtectedRoute userLoggedIn={userLoggedIn}><Home /></ProtectedRoute>} />
             <Route path="/dashboard" element={<ProtectedRoute userLoggedIn={userLoggedIn}><Dashboard /></ProtectedRoute>} />
+            <Route path="/history" element={<ProtectedRoute userLoggedIn={userLoggedIn}><History /></ProtectedRoute>} />
+            <Route path="/statistics" element={<ProtectedRoute userLoggedIn={userLoggedIn}><Statistics /></ProtectedRoute>} />
+            <Route path="/downloadReport" element={<ProtectedRoute userLoggedIn={userLoggedIn}><DownloadReport /></ProtectedRoute>} />
             <Route path="/StressModel/FaceDetector" element={<FaceDetector />} />
           </Routes>
           </main>
