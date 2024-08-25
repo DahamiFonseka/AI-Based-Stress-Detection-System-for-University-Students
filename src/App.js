@@ -7,6 +7,7 @@ import Footer from './Components/Footer';
 import Home from './Page/Home';
 import Login from './Page/Login';
 import Register from './Page/Register';
+import Dashboard from './Page/Dashboard';
 import Admin from './Page/Admin';
 import FaceDetector from './Page/StressModel/FaceDetector';
 
@@ -26,6 +27,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/home" element={<ProtectedRoute userLoggedIn={userLoggedIn}><Home /></ProtectedRoute>} />
+            <Route path="/dashboard" element={<ProtectedRoute userLoggedIn={userLoggedIn}><Dashboard /></ProtectedRoute>} />
             <Route path="/StressModel/FaceDetector" element={<FaceDetector />} />
           </Routes>
           </main>
