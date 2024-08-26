@@ -1,0 +1,75 @@
+.statistics-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+  }
+  
+  .chart-section {
+    margin: 40px 0;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #555;
+  }
+  
+  .critical-cases-list {
+    list-style: none;
+    padding: 0;
+    max-width: 600px;
+    margin: 0 auto;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    scroll-behavior: smooth;
+  }
+  
+  .critical-case-item {
+    display: flex;
+    flex-direction: column;
+    background-color: #fdf2f2;
+    padding: 12px;
+    margin: 8px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .critical-case-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  }
+  
+  .critical-case-item span {
+    margin-bottom: 5px;
+    color: #d9534f;
+    font-weight: bold;
+  }
+  
+  .critical-case-item span strong {
+    color: #333;
+  }
+  
+  .critical-cases-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .critical-cases-list::-webkit-scrollbar-thumb {
+    background-color: #d9534f;
+    border-radius: 10px;
+  }
+  
