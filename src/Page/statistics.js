@@ -19,11 +19,11 @@ const stressLevelDistribution = [
 ];
 
 const criticalStressCases = [
-  { id: '101', time: '2024-08-21 10:30:00', details: 'Severe stress identified in student 101.' },
-  { id: '102', time: '2024-08-22 14:45:00', details: 'Severe stress identified in student 102.' },
-  { id: '103', time: '2024-08-23 09:15:00', details: 'Severe stress identified in student 103.' },
-  { id: '104', time: '2024-08-24 12:00:00', details: 'Severe stress identified in student 104.' },
-  { id: '105', time: '2024-08-25 16:20:00', details: 'Severe stress identified in student 105.' },
+  { id: '20APC3821', time: '2024-08-21 10:30:00', details: 'High stress identified in student 20APC3821.' },
+  { id: '21CIS8932', time: '2024-08-22 14:45:00', details: 'High stress identified in student 20CIS8932.' },
+  { id: '18SSL8932', time: '2024-08-23 09:15:00', details: 'High stress identified in student 103.' },
+  { id: '22SSP5832', time: '2024-08-24 12:00:00', details: 'High stress identified in student 22SSP5832.' },
+  { id: '19APSE2832', time: '2024-08-25 16:20:00', details: 'High stress identified in student 19APSE2832.' },
 ];
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
