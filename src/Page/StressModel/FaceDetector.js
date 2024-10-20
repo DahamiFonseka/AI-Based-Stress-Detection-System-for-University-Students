@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import './FaceDetector.css';
 import Webcam from 'react-webcam';
 import axios from 'axios';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../../firebase/firebase.js';
 
 const FaceDetector = () => {
   const [detections, setDetections] = useState([]);
@@ -17,9 +19,23 @@ const FaceDetector = () => {
             image: base64String,
         });
         setDetections(response.data);
+
+        await saveDetectionToFirestore(response.data);
     } catch (error) {
         console.error('Error sending image for detection:', error);
     }
+};
+
+const saveDetectionToFirestore = async (detectionData) => {
+  try {
+    const docRef = await addDoc(collection(db, 'detections'), {
+      detection: detectionData,
+      timestamp: new Date(),
+    });
+    console.log("Detection data saved with ID: ", docRef.id);
+  } catch (error) {
+    console.error("Error adding detection data: ", error);
+  }
 };
 
 
@@ -30,10 +46,25 @@ const FaceDetector = () => {
         image: base64String,
       });
       setPrediction(response.data);
+
+      await savePredictionToFirestore(response.data);
     } catch (error) {
       console.error('Error sending image:', error);
     }
   };
+
+  const savePredictionToFirestore = async (predictionData) => {
+    try {
+      const docRef = await addDoc(collection(db, 'predictions'), {
+        prediction: predictionData,
+        timestamp: new Date(),
+      });
+      console.log("Prediction data saved with ID: ", docRef.id);
+    } catch (error) {
+      console.error("Error adding prediction data: ", error);
+    }
+  };
+
 
   const capture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
