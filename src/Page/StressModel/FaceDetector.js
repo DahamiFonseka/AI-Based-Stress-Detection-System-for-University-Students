@@ -12,33 +12,26 @@ const FaceDetector = () => {
   const webcamRef = useRef(null);
   const intervalRef = useRef(null);
 
+  // Function to send image for face detection
   const sendImageForDetection = async (imageData) => {
     try {
-        const base64String = imageData.replace("data:image/jpeg;base64,", "");
-        const response = await axios.post('http://localhost:5001/detect', {
-            image: base64String,
-        });
-        setDetections(response.data);
+      const base64String = imageData.replace("data:image/jpeg;base64,", "");
+      const response = await axios.post('http://localhost:5001/detect', {
+        image: base64String,
+      });
+      setDetections(response.data);
 
-        await saveDetectionToFirestore(response.data);
+      // If any detection is received, send the image for prediction
+      if (response.data.length > 0) {
+        sendImageForPrediction(imageData);
+        await saveDetectionToFirestore(response.data[0].student_id);
+      }
     } catch (error) {
-        console.error('Error sending image for detection:', error);
+      console.error('Error sending image for detection:', error);
     }
-};
+  };
 
-const saveDetectionToFirestore = async (detectionData) => {
-  try {
-    const docRef = await addDoc(collection(db, 'detections'), {
-      detection: detectionData,
-      timestamp: new Date(),
-    });
-    console.log("Detection data saved with ID: ", docRef.id);
-  } catch (error) {
-    console.error("Error adding detection data: ", error);
-  }
-};
-
-
+  // Function to send image for emotion prediction
   const sendImageForPrediction = async (imageData) => {
     try {
       const base64String = imageData.replace("data:image/jpeg;base64,", "");
@@ -47,46 +40,64 @@ const saveDetectionToFirestore = async (detectionData) => {
       });
       setPrediction(response.data);
 
-      await savePredictionToFirestore(response.data);
+      // Save only label, state, and timestamp to Firestore
+      await savePredictionToFirestore(response.data[0].label, response.data[0].state);
     } catch (error) {
-      console.error('Error sending image:', error);
+      console.error('Error sending image for prediction:', error);
     }
   };
 
-  const savePredictionToFirestore = async (predictionData) => {
+  // Save the detection data (student_id and timestamp)
+  const saveDetectionToFirestore = async (student_id) => {
     try {
-      const docRef = await addDoc(collection(db, 'predictions'), {
-        prediction: predictionData,
+      const docRef = await addDoc(collection(db, 'detections'), {
+        student_id: student_id,
         timestamp: new Date(),
       });
-      console.log("Prediction data saved with ID: ", docRef.id);
+      console.log("Detection saved with ID: ", docRef.id);
     } catch (error) {
-      console.error("Error adding prediction data: ", error);
+      console.error("Error saving detection data: ", error);
     }
   };
 
-
-  const capture = () => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    sendImageForDetection(imageSrc);
-    sendImageForPrediction(imageSrc);
+  // Save the prediction data (label, state, and timestamp)
+  const savePredictionToFirestore = async (label, state) => {
+    try {
+      const docRef = await addDoc(collection(db, 'predictions'), {
+        label: label,
+        state: state,
+        timestamp: new Date(),
+      });
+      console.log("Prediction saved with ID: ", docRef.id);
+    } catch (error) {
+      console.error("Error saving prediction data: ", error);
+    }
   };
 
+  // Capture function that sends image for detection
+  const capture = () => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    sendImageForDetection(imageSrc); // Only sending for detection now
+  };
+
+  // Start capturing every 2 seconds
   const startCapture = () => {
     setIsCapturing(true);
     intervalRef.current = setInterval(() => {
       capture();
-    }, 1000); 
+    }, 1000); // Capturing every 2 seconds
   };
 
+  // Stop capturing
   const stopCapture = () => {
     setIsCapturing(false);
     clearInterval(intervalRef.current);
     window.location.reload();
   };
 
+  // Clean up the interval on component unmount
   useEffect(() => {
-    return () => clearInterval(intervalRef.current); 
+    return () => clearInterval(intervalRef.current);
   }, []);
 
   useEffect(() => {
