@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import './FaceDetector.css';
 import Webcam from 'react-webcam';
 import axios from 'axios';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase/firebase.js';
 
 const FaceDetector = () => {
@@ -11,6 +11,7 @@ const FaceDetector = () => {
   const [isCapturing, setIsCapturing] = useState(false);
   const webcamRef = useRef(null);
   const intervalRef = useRef(null);
+  const [docId, setDocId] = useState(null);
 
   // Function to send image for face detection
   const sendImageForDetection = async (imageData) => {
@@ -21,10 +22,13 @@ const FaceDetector = () => {
       });
       setDetections(response.data);
 
-      // If any detection is received, send the image for prediction
       if (response.data.length > 0) {
-        sendImageForPrediction(imageData);
-        await saveDetectionToFirestore(response.data[0].student_id);
+        // Save detection data to Firestore and get document ID
+        const detectionDocId = await saveDetectionToFirestore(response.data[0].student_id);
+        setDocId(detectionDocId); 
+
+        // Send the image for prediction
+        sendImageForPrediction(imageData, detectionDocId);
       }
     } catch (error) {
       console.error('Error sending image for detection:', error);
@@ -32,7 +36,7 @@ const FaceDetector = () => {
   };
 
   // Function to send image for emotion prediction
-  const sendImageForPrediction = async (imageData) => {
+  const sendImageForPrediction = async (imageData, detectionDocId) => {
     try {
       const base64String = imageData.replace("data:image/jpeg;base64,", "");
       const response = await axios.post('http://localhost:5000/predict', {
@@ -40,8 +44,8 @@ const FaceDetector = () => {
       });
       setPrediction(response.data);
 
-      // Save only label, state, and timestamp to Firestore
-      await savePredictionToFirestore(response.data[0].label, response.data[0].state);
+      // Update the existing Firestore document with label, state, and timestamp
+      await updatePredictionInFirestore(detectionDocId, response.data[0].label, response.data[0].state);
     } catch (error) {
       console.error('Error sending image for prediction:', error);
     }
@@ -50,34 +54,35 @@ const FaceDetector = () => {
   // Save the detection data (student_id and timestamp)
   const saveDetectionToFirestore = async (student_id) => {
     try {
-      const docRef = await addDoc(collection(db, 'detections'), {
+      const docRef = await addDoc(collection(db, 'combinedData'), {
         student_id: student_id,
         timestamp: new Date(),
       });
       console.log("Detection saved with ID: ", docRef.id);
+      return docRef.id;
     } catch (error) {
       console.error("Error saving detection data: ", error);
     }
   };
 
-  // Save the prediction data (label, state, and timestamp)
-  const savePredictionToFirestore = async (label, state) => {
+  // Update the prediction data (label, state, and timestamp)
+  const updatePredictionInFirestore = async (detectionDocId, label, state) => {
     try {
-      const docRef = await addDoc(collection(db, 'predictions'), {
+      const docRef = doc(db, 'combinedData', detectionDocId);
+      await updateDoc(docRef, {
         label: label,
         state: state,
-        timestamp: new Date(),
       });
-      console.log("Prediction saved with ID: ", docRef.id);
+      console.log("Prediction updated for document ID: ", detectionDocId);
     } catch (error) {
-      console.error("Error saving prediction data: ", error);
+      console.error("Error updating prediction data: ", error);
     }
   };
 
   // Capture function that sends image for detection
   const capture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
-    sendImageForDetection(imageSrc); // Only sending for detection now
+    sendImageForDetection(imageSrc);
   };
 
   // Start capturing every 2 seconds
@@ -85,10 +90,9 @@ const FaceDetector = () => {
     setIsCapturing(true);
     intervalRef.current = setInterval(() => {
       capture();
-    }, 1000); // Capturing every 2 seconds
+    }, 2000);
   };
 
-  // Stop capturing
   const stopCapture = () => {
     setIsCapturing(false);
     clearInterval(intervalRef.current);
