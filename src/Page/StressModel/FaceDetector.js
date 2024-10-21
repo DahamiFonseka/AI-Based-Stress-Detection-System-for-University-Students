@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import './FaceDetector.css';
 import Webcam from 'react-webcam';
 import axios from 'axios';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase/firebase.js';
 
 const FaceDetector = () => {
@@ -11,35 +11,32 @@ const FaceDetector = () => {
   const [isCapturing, setIsCapturing] = useState(false);
   const webcamRef = useRef(null);
   const intervalRef = useRef(null);
+  const [docId, setDocId] = useState(null);
 
+  // Function to send image for face detection
   const sendImageForDetection = async (imageData) => {
     try {
-        const base64String = imageData.replace("data:image/jpeg;base64,", "");
-        const response = await axios.post('http://localhost:5001/detect', {
-            image: base64String,
-        });
-        setDetections(response.data);
+      const base64String = imageData.replace("data:image/jpeg;base64,", "");
+      const response = await axios.post('http://localhost:5001/detect', {
+        image: base64String,
+      });
+      setDetections(response.data);
 
-        await saveDetectionToFirestore(response.data);
+      if (response.data.length > 0) {
+        // Save detection data to Firestore and get document ID
+        const detectionDocId = await saveDetectionToFirestore(response.data[0].student_id);
+        setDocId(detectionDocId); 
+
+        // Send the image for prediction
+        sendImageForPrediction(imageData, detectionDocId);
+      }
     } catch (error) {
-        console.error('Error sending image for detection:', error);
+      console.error('Error sending image for detection:', error);
     }
-};
+  };
 
-const saveDetectionToFirestore = async (detectionData) => {
-  try {
-    const docRef = await addDoc(collection(db, 'detections'), {
-      detection: detectionData,
-      timestamp: new Date(),
-    });
-    console.log("Detection data saved with ID: ", docRef.id);
-  } catch (error) {
-    console.error("Error adding detection data: ", error);
-  }
-};
-
-
-  const sendImageForPrediction = async (imageData) => {
+  // Function to send image for emotion prediction
+  const sendImageForPrediction = async (imageData, detectionDocId) => {
     try {
       const base64String = imageData.replace("data:image/jpeg;base64,", "");
       const response = await axios.post('http://localhost:5000/predict', {
@@ -47,36 +44,53 @@ const saveDetectionToFirestore = async (detectionData) => {
       });
       setPrediction(response.data);
 
-      await savePredictionToFirestore(response.data);
+      // Update the existing Firestore document with label, state, and timestamp
+      await updatePredictionInFirestore(detectionDocId, response.data[0].label, response.data[0].state);
     } catch (error) {
-      console.error('Error sending image:', error);
+      console.error('Error sending image for prediction:', error);
     }
   };
 
-  const savePredictionToFirestore = async (predictionData) => {
+  // Save the detection data (student_id and timestamp)
+  const saveDetectionToFirestore = async (student_id) => {
     try {
-      const docRef = await addDoc(collection(db, 'predictions'), {
-        prediction: predictionData,
+      const docRef = await addDoc(collection(db, 'combinedData'), {
+        student_id: student_id,
         timestamp: new Date(),
       });
-      console.log("Prediction data saved with ID: ", docRef.id);
+      console.log("Detection saved with ID: ", docRef.id);
+      return docRef.id;
     } catch (error) {
-      console.error("Error adding prediction data: ", error);
+      console.error("Error saving detection data: ", error);
     }
   };
 
+  // Update the prediction data (label, state, and timestamp)
+  const updatePredictionInFirestore = async (detectionDocId, label, state) => {
+    try {
+      const docRef = doc(db, 'combinedData', detectionDocId);
+      await updateDoc(docRef, {
+        label: label,
+        state: state,
+      });
+      console.log("Prediction updated for document ID: ", detectionDocId);
+    } catch (error) {
+      console.error("Error updating prediction data: ", error);
+    }
+  };
 
+  // Capture function that sends image for detection
   const capture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     sendImageForDetection(imageSrc);
-    sendImageForPrediction(imageSrc);
   };
 
+  // Start capturing every 2 seconds
   const startCapture = () => {
     setIsCapturing(true);
     intervalRef.current = setInterval(() => {
       capture();
-    }, 1000); 
+    }, 2000);
   };
 
   const stopCapture = () => {
@@ -85,8 +99,9 @@ const saveDetectionToFirestore = async (detectionData) => {
     window.location.reload();
   };
 
+  // Clean up the interval on component unmount
   useEffect(() => {
-    return () => clearInterval(intervalRef.current); 
+    return () => clearInterval(intervalRef.current);
   }, []);
 
   useEffect(() => {
