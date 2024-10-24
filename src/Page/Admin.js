@@ -17,7 +17,7 @@ const LoginRegister = () => {
 
     return (
         <div className ={`wrapper${action}`}>
-            <div className="form-box login">
+             <div className={`form-box login${action}`}>
                 <form action = "">
                     <h1> Admin Login </h1>
                     <div className="input-box">
