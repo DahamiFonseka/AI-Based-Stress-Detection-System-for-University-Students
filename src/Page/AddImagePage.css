@@ -1,0 +1,68 @@
+ /* Center the form in the page */
+.add-image-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+  }
+  
+  /* Title styling */
+  .add-image-container h2 {
+    text-align: center;
+    color: #333;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+  }
+  
+  /* Form label and input styling */
+  .add-image-container label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .add-image-container input[type="text"],
+  .add-image-container input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+  }
+  
+  .add-image-container input[type="file"] {
+    padding: 5px;
+  }
+  
+  /* Submit button styling */
+  .add-image-container button {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    font-weight: bold;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .add-image-container button:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Status message styling */
+  .add-image-container p {
+    text-align: center;
+    font-size: 0.8em;
+    color: #686868;
+    margin-top: 1px;
+  }
+  
+
