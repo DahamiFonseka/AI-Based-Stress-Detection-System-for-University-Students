@@ -13,6 +13,7 @@ import FaceDetector from './Page/StressModel/FaceDetector';
 import History from './Page/history';
 import Statistics from './Page/statistics';
 import DownloadReport from './Page/downloadReport';
+import AddImagePage from './Page/AddImagePage';
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
             <Route path="/history" element={<ProtectedRoute userLoggedIn={userLoggedIn}><History /></ProtectedRoute>} />
             <Route path="/statistics" element={<ProtectedRoute userLoggedIn={userLoggedIn}><Statistics /></ProtectedRoute>} />
             <Route path="/downloadReport" element={<ProtectedRoute userLoggedIn={userLoggedIn}><DownloadReport /></ProtectedRoute>} />
+            <Route path="/add-image" element={<ProtectedRoute userLoggedIn={userLoggedIn}><AddImagePage /></ProtectedRoute>} />
             <Route path="/StressModel/FaceDetector" element={<FaceDetector />} />
           </Routes>
           </main>
