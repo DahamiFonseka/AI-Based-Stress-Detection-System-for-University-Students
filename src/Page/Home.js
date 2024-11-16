@@ -13,7 +13,7 @@ const Home = () => {
         <h1>
           Welcome to the <br /> AI-Based Stress Detection System
         </h1>
-        <Link to="/StressModel/FaceDetector"><button>Get Started</button></Link>
+        <Link to="/admission"><button>Get Started</button></Link>
         <button>Learn More</button>
       </div>
     </div>
