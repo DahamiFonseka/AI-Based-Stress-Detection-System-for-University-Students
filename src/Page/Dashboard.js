@@ -4,7 +4,7 @@ import './Dashboard.css';
 import { FaHistory, FaChartBar, FaDownload } from 'react-icons/fa';
 
 const Dashboard = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate();;
 
   const handleHistoryClick = () => {
     navigate('/history');
@@ -16,6 +16,10 @@ const Dashboard = () => {
 
   const handleDownloadReportClick = () => {
     navigate('/downloadReport');
+  };
+
+  const handleAddImageClick = () => {
+    navigate('/add-image');
   };
 
   return (
@@ -43,6 +47,11 @@ const Dashboard = () => {
           <p>Download your activity reports in PDF format.</p>
           <button onClick={handleDownloadReportClick}>Download Report</button>
         </div>
+
+        
+      </div>
+      <div className="add-image-button">
+        <button onClick={handleAddImageClick}>Add Image</button>
       </div>
     </div>
   );
