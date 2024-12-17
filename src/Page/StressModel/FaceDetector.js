@@ -3,7 +3,7 @@ import './FaceDetector.css';
 import Webcam from 'react-webcam';
 import axios from 'axios';
 import { collection, addDoc, updateDoc, doc } from 'firebase/firestore';
-import { db } from '../../firebase/firebase.js';
+import {db} from '../../firebase/firebase.js';
 
 const FaceDetector = () => {
   const [detections, setDetections] = useState([]);

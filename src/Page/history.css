@@ -9,6 +9,12 @@
     margin-bottom: 30px;
     color: #333;
   }
+
+  .history-table-container {
+    max-height: 400px; /* Adjust the height as needed */
+    overflow-y: auto;
+    border: 1px solid #ddd;
+  }
   
   .history-table {
     width: 100%;
@@ -50,4 +56,18 @@
   .details-button:hover {
     background-color: #2980b9;
   }
+
+  .delete-button {
+    padding: 5px 10px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .delete-button:hover {
+    background-color: #cc0000;
+  }
+  
   
