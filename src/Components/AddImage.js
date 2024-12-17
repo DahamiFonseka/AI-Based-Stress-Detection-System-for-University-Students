@@ -1,4 +1,4 @@
-// src/components/AddImage.js
+
 import '../Page/AddImagePage.css';
 import React, { useState } from 'react';
 
@@ -7,12 +7,12 @@ const AddImage = () => {
   const [studentId, setStudentId] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
 
-  // Handle file input change
+
   const handleFileChange = (event) => {
     setImageFile(event.target.files[0]);
   };
 
-  // Handle student ID input change
+
   const handleStudentIdChange = (event) => {
     setStudentId(event.target.value);
   };
@@ -30,9 +30,9 @@ const AddImage = () => {
       // Convert image to base64
       const reader = new FileReader();
       reader.onloadend = async () => {
-        const base64Image = reader.result.split(',')[1]; // Get the base64 string without the prefix
+        const base64Image = reader.result.split(',')[1]; 
 
-        // Send data to the backend
+       
         const response = await fetch('http://localhost:5001/addImage', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
