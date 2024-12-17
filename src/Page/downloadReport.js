@@ -1,46 +1,58 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { db } from '../firebase/firebase.js'; // Ensure you have firebase.js configured
+import { collection, getDocs } from 'firebase/firestore';
+import jsPDF from 'jspdf';
 import './downloadReport.css';
 
-const historyData = [
-  { id: '20APC4636', time: '2024-08-20 14:30:00', details: 'Activity details for record 20APC4636' },
-  { id: '20APC4000', time: '2024-08-21 09:45:00', details: 'Activity details for record 20APC4000' },
-  { id: '20APC4905', time: '2024-08-22 18:15:00', details: 'Activity details for record 20APC4905' },
-  { id: '20CIS5784', time: '2024-08-23 11:00:00', details: 'Activity details for record 20CIS5784' },
-  { id: '20SSP4628', time: '2024-08-24 20:20:00', details: 'Activity details for record 20SSP4628' },
-];
-
 const DownloadReport = () => {
+  const [records, setRecords] = useState([]);
 
-  const generateReport = (record) => {
-    const reportContent = `
-      Report for Record ID: ${record.id}\n
-      Recorded Time: ${record.time}\n
-      Details: ${record.details}\n
-    `;
+  // Fetch data from Firebase
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'combinedData')); // Replace 'history' with your collection name
+        const data = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setRecords(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-    const blob = new Blob([reportContent], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.style.display = 'none';
-    a.href = url;
-    a.download = `report_${record.id}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
+    fetchData();
+  }, []);
+
+  // Generate PDF Report
+  const generatePDFReport = (record) => {
+    const pdf = new jsPDF();
+    pdf.setFontSize(16);
+    pdf.text(`Report for Record ID: ${record.id}`, 10, 20);
+    pdf.setFontSize(12);
+    pdf.text(`Recorded Time: ${record.time}`, 10, 40);
+    pdf.text(`Details: ${record.details}`, 10, 60);
+
+    // Save the PDF
+    pdf.save(`report_${record.id}.pdf`);
   };
 
   return (
     <div className="downloadreport-container">
       <h1>Download Reports</h1>
-      <ul className="report-list">
-        {historyData.map((record) => (
-          <li key={record.id} className="report-item">
-            <span>Record ID: {record.id}</span>
-            <button onClick={() => generateReport(record)}>Download Report</button>
-          </li>
-        ))}
-      </ul>
+      {records.length === 0 ? (
+        <p>Loading records...</p>
+      ) : (
+        <ul className="report-list">
+          {records.map((record) => (
+            <li key={record.id} className="report-item">
+              <span>Record ID: {record.id}</span>
+              <button onClick={() => generatePDFReport(record)}>Download Report</button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
