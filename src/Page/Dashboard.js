@@ -4,7 +4,7 @@ import './Dashboard.css';
 import { FaHistory, FaChartBar, FaDownload } from 'react-icons/fa';
 
 const Dashboard = () => {
-  const navigate = useNavigate();;
+  const navigate = useNavigate();
 
   const handleHistoryClick = () => {
     navigate('/history');
@@ -25,7 +25,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <h1>Dashboard</h1>
-      
+
       <div className="dashboard-section">
         <div className="card">
           <FaHistory className="icon" />
@@ -53,11 +53,12 @@ const Dashboard = () => {
             <button onClick={handleDownloadReportClick}>Download Report</button>
           </div>
         </div>
-
-        
       </div>
-      <div className="add-image-button">
-        <button onClick={handleAddImageClick}>Add Image</button>
+
+      <div className="add-image-section">
+        <button onClick={handleAddImageClick} className="add-image-button">
+          Add Image
+        </button>
       </div>
     </div>
   );
