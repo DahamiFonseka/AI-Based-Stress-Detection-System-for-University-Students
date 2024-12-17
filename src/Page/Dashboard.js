@@ -31,21 +31,27 @@ const Dashboard = () => {
           <FaHistory className="icon" />
           <h2>History</h2>
           <p>View your activity history and log details.</p>
-          <button onClick={handleHistoryClick}>View History</button>
+          <div className="button-container">
+            <button onClick={handleHistoryClick}>View History</button>
+          </div>
         </div>
 
         <div className="card">
           <FaChartBar className="icon" />
           <h2>Statistics</h2>
           <p>Check out your performance statistics and metrics.</p>
-          <button onClick={handleStatisticsClick}>View Statistics</button>
+          <div className="button-container">
+            <button onClick={handleStatisticsClick}>View Statistics</button>
+          </div>
         </div>
 
         <div className="card">
           <FaDownload className="icon" />
           <h2>Download Report</h2>
           <p>Download your activity reports in PDF format.</p>
-          <button onClick={handleDownloadReportClick}>Download Report</button>
+          <div className="button-container">
+            <button onClick={handleDownloadReportClick}>Download Report</button>
+          </div>
         </div>
       </div>
 

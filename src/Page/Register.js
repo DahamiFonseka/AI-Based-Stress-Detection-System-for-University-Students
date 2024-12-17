@@ -45,8 +45,12 @@ const Register = () => {
                 await doCreateUserWithEmailAndPassword(email, password);
                 navigate('/login');  // Navigate to login after successful registration
             } catch (error) {
-                setErrorMessage(error.message);
-                setIsRegistering(false);
+                if (error.code === 'auth/email-already-in-use') {
+                    setErrorMessage('Email already in use');
+                } else {
+                    setErrorMessage('Email already in use');
+                }
+                setIsRegistering(false); // Reset signing in state
             }
         }
     };
