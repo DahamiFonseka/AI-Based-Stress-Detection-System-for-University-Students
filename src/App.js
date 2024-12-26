@@ -14,6 +14,8 @@ import History from './Page/history';
 import Statistics from './Page/statistics';
 import DownloadReport from './Page/downloadReport';
 import AddImagePage from './Page/AddImagePage';
+import AboutUs from './Page/aboutUs';
+import LearnMore from './Page/learnMore';
 
 function App() {
 
@@ -30,6 +32,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/aboutUs" element={<AboutUs />} />
+            <Route path="/learnMore" element={<LearnMore />} />
             <Route path="/home" element={<ProtectedRoute userLoggedIn={userLoggedIn}><Home /></ProtectedRoute>} />
             <Route path="/dashboard" element={<ProtectedRoute userLoggedIn={userLoggedIn}><Dashboard /></ProtectedRoute>} />
             <Route path="/history" element={<ProtectedRoute userLoggedIn={userLoggedIn}><History /></ProtectedRoute>} />
