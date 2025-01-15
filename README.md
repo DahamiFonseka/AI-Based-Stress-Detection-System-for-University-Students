@@ -159,7 +159,12 @@ Ensure `stressdetector.json` and `stressdetectorV1.h5` are in the backend direct
 
 ## Contributing
 
-Contributions are welcome! If you'd like to contribute, please fork the repository and create a pull request with your changes. For major changes, open an issue first to discuss your proposal.
+This was conducted as the second year Mini project of our degree programme at the university. 
+### Contrubutors:
+- Ms. Dahami Fonseka (https://github.com/DahamiFonseka)
+- Mr. Nimtharu Jayasekara (https://github.com/gnjayasekara)
+- Mr. Lalitha Sri Vidhara (https://github.com/lalithaVidhara)
+- Mr. Nazik Muhammad (https://github.com/Nazik-0)
 
 ---
 
